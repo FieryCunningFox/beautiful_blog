@@ -1,53 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" action="">
-    <!-- 2 column grid layout with text inputs for the first and last names -->
-    <div class="row mb-4">
-      <div class="col">
-        <div class="form-outline">
-          <input type="text" id="form3Example1" class="form-control" />
-          <label class="form-label" for="form3Example1">First name</label>
-        </div>
+<header class="masthead" style="height:1em; padding:50px"></header>
+
+<h1 style="text-align:center; font-size:1em; font-weight:normal; font-size:48px;">Login your account</h1>
+
+<article class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center; margin-top: 35px;">
+            <input type="text" id="form3Example1" class="form-control" placeholder="Enter your username..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />
+          </div>
+    
+          <!-- Password input -->
+          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+            <input type="password" id="form3Example4" class="form-control" placeholder="Enter your password..."  style="width: 60%; height: 50px; font-style:italic;"/>
+          </div>
+    
+          <div class="form-check d-flex justify-content-center mb-4">
+            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+            <label class="form-check-label" for="form2Example33">
+              Subscribe to our newsletter
+            </label>
+          </div>
+    
+          <div class="text-center">
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4" style="border-radius:10px; padding:12px 30px;">Sign up</button>
+
+            <p style="margin-top:25px; margin-bottom:10px; font-style:italic;">or sign up with:</p>
+    
+            <button type="button" class="btn btn-primary btn-floating mx-1" style="border-radius:10px; padding:12px 30px; margin-bottom:90px;">
+              <i class="fab fa-google"></i>
+            </button>
+          </div>
+        </form>
       </div>
-      <div class="col">
-        <div class="form-outline">
-          <input type="text" id="form3Example2" class="form-control" />
-          <label class="form-label" for="form3Example2">Last name</label>
-        </div>
-      </div>
     </div>
-  
-    <!-- Email input -->
-    <div class="form-outline mb-4">
-      <input type="email" id="form3Example3" class="form-control" />
-      <label class="form-label" for="form3Example3">Email address</label>
-    </div>
-  
-    <!-- Password input -->
-    <div class="form-outline mb-4">
-      <input type="password" id="form3Example4" class="form-control" />
-      <label class="form-label" for="form3Example4">Password</label>
-    </div>
-  
-    <div class="form-check d-flex justify-content-center mb-4">
-      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-      <label class="form-check-label" for="form2Example33">
-        Subscribe to our newsletter
-      </label>
-    </div>
-  
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
-  
-    <!-- Register buttons -->
-    <div class="text-center">
-      <p>or sign up with:</p>
-  
-      <button type="button" class="btn btn-primary btn-floating mx-1">
-        <i class="fab fa-google"></i>
-      </button>
-    </div>
-</form>
-  
+  </div>
+</article>
 {% endblock %}
