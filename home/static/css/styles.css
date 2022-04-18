@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 .carousel-item {
-  height: 25rem 300px;
+  height: 20rem;
 }
 .carousel-inner{
-  height: 25rem;
+  height: 20rem;
 }
 
 .home-slider {

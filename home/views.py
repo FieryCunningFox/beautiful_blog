@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import TemplateView
 from django.utils import timezone
 
@@ -14,7 +18,6 @@ def home(request):
         .defer('created_at', 'modified_at')
     )  # only that post already published
     return render(request, 'home.html', {"posts": posts})
-# upload_date__lte=timezone.now()
 
 def about(request):
     return render(request, 'about.html')
@@ -41,21 +44,62 @@ def posts(request, slug):
         comment_form = None
     return render(request, 'posts.html', {"post": post, "comment_form": comment_form})
 
-def register(request):
-    return render(request, 'register.html')
+class author_profile(TemplateView):
+    template_name = "author.html"
+
 
 class LoginView(TemplateView):
+    form_class = AuthenticationForm
     template_name = "login.html"
+    
+    success_url = "/"
+    
+    def form_valid(self, form):
+        self.user = form.get_user()
+        login(self.request, self.user)
+        return super(LoginView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         context = {}
         if request.method == 'POST':
-            username = request.POST['username']
-            password = request.POST['password']
+            username = request.POST['login_username']
+            password = request.POST['login_password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/")
+                return redirect("profile")
             else:
                 context['error'] = "Wrong username or password"
         return render(request, self.template_name, context)
+    
+
+class RegisterView(TemplateView):
+    form_class = UserCreationForm
+    template_name = "register.html"
+    
+    success_url = "/"
+    
+    def form_valid(self, form):
+        form.save()
+        return super(RegisterView, self).form_valid(form)
+    
+    def dispatch(self, request, *args, **kwargs):
+        context = {}
+        if request.method == 'POST':
+            username = request.POST['register_username']
+            email = request.POST['register_email']
+            password1 = request.POST['register_password']
+            password2 = request.POST['register_repeat_password']
+            
+            if password1 == password2:
+                User.objects.create_user(username, email, password1)
+                return redirect(reverse("login"))
+            else:
+                context['error'] = "Something wrong, please try again"
+        return render(request, self.template_name, context)
+
+
+class LogoutView(TemplateView):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect("/")

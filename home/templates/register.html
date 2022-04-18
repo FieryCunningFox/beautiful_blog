@@ -1,62 +1,68 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="vh-100 bg-image" style="background: #6c757d;">
-    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-      <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-            <div class="card" style="border-radius: 15px;">
-              <div class="card-body p-5">
-                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-  
-                <form>
-  
-                  <div class="form-outline mb-4">
-                    <input type="text" name="registerUsername" id="form3Example1cg" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example1cg">Your Name</label>
-                  </div>
-  
-                  <div class="form-outline mb-4">
-                    <input type="email" name="registerEmail" id="form3Example3cg" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example3cg">Your Email</label>
-                  </div>
-  
-                  <div class="form-outline mb-4">
-                    <input type="password" name="registerPassword" id="form3Example4cg" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example4cg">Password</label>
-                  </div>
-  
-                  <div class="form-outline mb-4">
-                    <input type="password" name="registerRepeatPassword" id="form3Example4cdg" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-                  </div>
-  
-                  <div class="form-check d-flex justify-content-center mb-5">
-                    <input
-                      class="form-check-input me-2"
-                      type="checkbox"
-                      value=""
-                      id="form2Example3cg"
-                    />
-                    <label class="form-check-label" for="form2Example3g">
-                      I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
-                    </label>
-                  </div>
-  
-                  <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
-                  </div>
-  
-                  <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!" class="fw-bold text-body"><u>Login here</u></a></p>
-  
-                </form>
-  
-              </div>
-            </div>
+<header class="masthead" style="height:1em; padding:50px;"></header>
+
+<h1 style="text-align:center; font-size:1em; font-weight:normal; font-size:48px;">Registration</h1>
+
+<article class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center; margin-top: 35px;">
+            <input type="text" name="register_username" id="username" class="form-control" placeholder="Enter your username..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />
           </div>
-        </div>
+
+          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+            <input type="email" name="register_email" id="form3Example3cg" class="form-control" placeholder="Enter your email..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;"/>
+          </div>
+    
+          <!-- Password input -->
+          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+            <input type="password" name="register_password" id="password" class="form-control" placeholder="Enter your password..."  style="width: 60%; height: 50px; font-style:italic;"/>
+          </div>
+
+          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+            <input type="password" name="register_repeat_password" id="form3Example4cdg" class="form-control" placeholder="Enter your password again..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />
+          </div>
+    
+          <div class="form-check d-flex justify-content-center mb-4">
+            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+            <label class="form-check-label" for="form2Example33">
+              Subscribe to our newsletter
+            </label>
+          </div>
+
+          <div class="form-check d-flex justify-content-center mb-5">
+            <input
+              class="form-check-input me-2"
+              type="checkbox"
+              value=""
+              id="form2Example3cg"
+              checked
+            />
+            <label class="form-check-label" for="form2Example3g">
+              I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+            </label>
+          </div>
+
+    
+          <div class="text-center">
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4" style="border-radius:10px; padding:12px 30px;">Register</button>
+            <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{% url 'login' %}" class="fw-bold text-body"><u>Login here</u></a></p>
+            
+            <p style="margin-top:25px; margin-bottom:10px; font-style:italic;">or sign up with:</p>
+      
+            <button type="button" class="btn btn-primary btn-floating mx-1" style="border-radius:10px; padding:12px 30px; margin-bottom:80px;">
+              <i class="fab fa-google"></i>
+          </button>
+          </div>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
+</article>
 {% endblock %}

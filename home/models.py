@@ -47,7 +47,7 @@ class Comment(models.Model):
         verbose_name_plural = "Comments"
         
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    content = models.TextField(max_length=300)
+    content = models.TextField(max_length=300, verbose_name="")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(db_index=True)
     content_object = GenericForeignKey("content_type", "object_id")

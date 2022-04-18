@@ -33,7 +33,7 @@
                     {% endif %}
                     <p>{{ post.content|safe }}</p>
                         Placeholder text by
-                        <a href="http://spaceipsum.com/">Space Ipsum</a>
+                        <strong style="font-style: italic;"><a href="#">{{ post.author }}</a></strong>
                         &middot; Images by
                         <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
                         {% include 'post-comment.html' %}
