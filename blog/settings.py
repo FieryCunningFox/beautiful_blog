@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 
+TIME_ZONE = 'Europe/Moscow'
+USE_TZ = True
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -129,4 +132,25 @@ FROALA_EDITOR_PLUGINS = ('align', 'char_counter', 'code_beautifier' ,'code_view'
         'line_breaker', 'link', 'html','lists', 'paragraph_format', 'paragraph_style', 'quick_insert', 'quote', 'save', 'table',
         'url', 'video')
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
