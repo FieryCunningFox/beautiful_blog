@@ -74,7 +74,7 @@
 
     <!-- Main Content-->
     
-    <div class="container px-4 px-lg-5">
+    <div class="container px-4 px-lg-5" style="margin-top: 60px;">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 {% for post in posts %}
@@ -83,7 +83,7 @@
                     <a href="post.html">
                         <h2 class="post-title"><a href="{% url 'posts' post.slug %}">{{ post.title }}</a></h2>
                         {% if post.summary  %}
-                        <h3 class="post-subtitle">{{ post.summary }}</h3>
+                        <h3 class="post-subtitle" style="font-weight:normal">{{ post.summary }}</h3>
                         {% endif %}
                     </a>
                     <p class="post-meta">
@@ -93,8 +93,10 @@
                 </div>
                 <!-- Divider-->
                 <hr class="my-4" />
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#">Older Posts →</a></div>
                 {% endfor %}
+
+                {% include 'paginator.html' with page=posts %}
+                
             </div>
         </div>
     </div>

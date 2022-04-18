@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -8,16 +10,27 @@ from django.views.generic import TemplateView
 from django.utils import timezone
 
 from .models import blogModel
-from .forms import CommentForm
+from .forms import CommentForm,  EmailPostForm
 
 
 def home(request):
+    context = {}
     posts = (
         blogModel.objects.filter(published_at__lte=timezone.now())
         .select_related("author")
         .defer('created_at', 'modified_at')
-    )  # only that post already published
-    return render(request, 'home.html', {"posts": posts})
+    )
+    
+    current_page = Paginator(posts, 10)
+    page = request.GET.get('page')
+    try:  
+        context['posts'] = current_page.page(page)  
+    except PageNotAnInteger:
+        context['posts'] = current_page.page(1)  
+    except EmptyPage:
+        context['posts'] = current_page.page(current_page.num_pages)
+        
+    return render(request, 'home.html', context)
 
 def about(request):
     return render(request, 'about.html')
@@ -43,6 +56,23 @@ def posts(request, slug):
     else:
         comment_form = None
     return render(request, 'posts.html', {"post": post, "comment_form": comment_form})
+
+def post_share(request, slug):  
+    post = get_object_or_404(blogModel, slug=slug)
+    sent = False
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = f"""{cd['name']} ({cd['email']}) recommends you reading " {post.title}\""""
+            message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(post.title, post_url, cd['name'], cd['comments'])
+            send_mail(subject, message, 'admin@myblog.com', [cd['to']])
+            sent = True
+    else:  
+        form = EmailPostForm()
+    return render(request, 'share.html', {'post': post, 'form': form, 'sent': sent})
+    
 
 class author_profile(TemplateView):
     template_name = "author.html"

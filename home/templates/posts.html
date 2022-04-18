@@ -29,14 +29,17 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     {% if post.image %}
-                        <img src="{{ post.image.url }}" style="width: 75%; margin: 20px;">
+                    <div class="text-center" style="margin-top: 50px;">
+                        <img src="{{ post.image.url }}" style="width: 80%;">
+                    </div>
                     {% endif %}
                     <p>{{ post.content|safe }}</p>
-                        Placeholder text by
-                        <strong style="font-style: italic;"><a href="#">{{ post.author }}</a></strong>
-                        &middot; Images by
-                        <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
-                        {% include 'post-comment.html' %}
+                        <div class="text-center" style="margin-top: 50px;">
+                            Placeholder text by
+                            <strong style="font-style: italic;"><a href="#" style="padding-right:20px;">{{ post.author }}</a></strong>
+                            &middot; <a href="{% url 'post_share' post.slug %}" style="padding-left:20px; ">Share post</a>
+                        </div>
+                        {% include 'post-comment.html'%}
                     </p>
                 </div>
             </div>

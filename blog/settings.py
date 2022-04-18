@@ -154,3 +154,9 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
+
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_HOST_USER = 'svetl.rudnewa2014@gmail.com'
+EMAIL_HOST_PASSWORD = 'cj,frfjhtk2003' 
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True

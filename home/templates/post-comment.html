@@ -1,6 +1,6 @@
 {% load crispy_forms_tags blog_extras %}
 
-<h4 style="text-align:center; margin-top: 30px; font-weight: 500; font-size: 38px;">Comments</h4>
+<h4 style="text-align:center; margin-top: 50px; font-weight: 500; font-size: 38px;">Comments</h4>
 {% for comment in post.comments.all %}
     {% row "border-top pt-2" %}
         {% col %}
@@ -25,12 +25,13 @@
         {% col %}
             {% if comment_form %}
                 <h4 style="margin-top:25px; margin-bottom:10px; font-style:italic;">Add Comment</h4>
-                <form method="post">
                 <div class="text-center">
+                <form method="post">
+                    {% csrf_token %}
                     {{ comment_form }}
                     <button type="submit" class="btn btn-primary" style="border-radius:10px; padding:12px 30px;">Send</button>
-                </div>
                 </form>
+            </div>
             {% endif %}
         {% end %}
     {% end %}

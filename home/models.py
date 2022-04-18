@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.utils.text import slugify
 import string, random
+from django.utils import timezone
 
 def generate_random_string(N):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k = N))
@@ -57,11 +58,15 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.content[:30]} ..."
 
-
 class blogModel(models.Model):
     
     class Meta:
         verbose_name_plural = "Posts"
+    
+    STATUS_CHOICES = (
+        ('draft', 'Draft'), 
+        ('published', 'Published'), 
+    ) 
     
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     title = models.CharField(max_length=300)
@@ -75,6 +80,8 @@ class blogModel(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
+    
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft') 
     
     def __str__(self):
         return self.title
