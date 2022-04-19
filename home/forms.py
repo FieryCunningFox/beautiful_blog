@@ -18,7 +18,7 @@ class CommentForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ["creator", "email", "phone", "message"]
+        fields = ["name", "email", "phone", "message"]
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

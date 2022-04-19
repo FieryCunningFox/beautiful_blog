@@ -59,7 +59,7 @@ def contact(request):
         else:
             question_form = QuestionForm()
             
-    return render(request, 'contact.html', {'question': question_form, })
+    return render(request, 'contact.html', {'question_form': question_form, })
 
 def posts(request, slug):
     post = get_object_or_404(blogModel, slug=slug)
@@ -81,20 +81,20 @@ def posts(request, slug):
     return render(request, 'posts.html', {"post": post, "comment_form": comment_form})
 
 def post_share(request, slug):  
-    post = get_object_or_404(blogModel, slug=slug)
+    post = get_object_or_404(blogModel, slug=slug, published_at__lte=timezone.now())
     sent = False
     if request.method == 'POST':
         form = EmailPostForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"""{cd['name']} ({cd['email']}) recommends you reading " {post.title}\""""
+            subject = f"""{cd['name']} ({cd['email']}) recommends you reading "{post.title}\""""
             message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(post.title, post_url, cd['name'], cd['comments'])
-            send_mail(subject, message, 'admin@myblog.com', [cd['to']])
+            send_mail(subject, message, 'svetl.rudnewa2014@yandex.ru', [cd['to']])
             sent = True
     else:  
         form = EmailPostForm()
-    return render(request, 'share.html', {'post': post, 'form': form, 'sent': sent})
+    return render(request, 'share.html', {"post": post, "form": form, "sent": sent})
     
 
 class author_profile(TemplateView):

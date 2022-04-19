@@ -62,7 +62,7 @@ class Question(models.Model):
     class Meta:
         verbose_name_plural = "Questions"
         
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=20)
     message = models.TextField(max_length=300)
@@ -78,10 +78,10 @@ class blogModel(models.Model):
     class Meta:
         verbose_name_plural = "Posts"
     
-    STATUS_CHOICES = (
-        ('draft', 'Draft'), 
-        ('published', 'Published'), 
-    ) 
+    # STATUS_CHOICES = (
+    #     ('draft', 'Draft'), 
+    #     ('published', 'Published'), 
+    # ) 
     
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     title = models.CharField(max_length=300)
@@ -96,7 +96,7 @@ class blogModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
     
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft') 
+    # status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft') 
     
     def __str__(self):
         return self.title
@@ -104,5 +104,8 @@ class blogModel(models.Model):
     def save(self, *args, **kwargs):
         self.slug = generate_slug(self.title)
         super(blogModel, self).save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        return f'/posts/{self.slug}'
         
 
