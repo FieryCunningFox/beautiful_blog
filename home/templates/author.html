@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load blog_extras %}
+{% load static %}
 
 {% block content %}
-    <header class="masthead" style="height:10em; padding:50px;">
+    <header class="masthead" style='height:14em; background-image: url("{% static 'img/profile.jpg' %}");'>
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">

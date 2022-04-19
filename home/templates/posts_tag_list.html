@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <!-- Page Header-->
+    
+    <header class="masthead" style='background-image: url("{% static 'img/search.jpg' %}");'>
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1 style="text-align: center; font-size: 42px; font-weight: 400;">Posts tagged with "{{ tag.name }}"</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content-->
+    
+    <div class="container px-4 px-lg-5" style="margin-top: 60px;">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for post in posts %}
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a href="post.html">
+                        <h2 class="post-title"><a href="{% url 'posts' post.slug %}">{{ post.title }}</a></h2>
+                        {% if post.summary  %}
+                        <h3 class="post-subtitle" style="font-weight:normal">{{ post.summary }}</h3>
+                        {% endif %}
+                    </a>
+                    <p class="post-meta">
+                        {% include "post-byline.html" %}
+                        <small>({{ post.content|wordcount }} words)</small>
+                    </p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+                {% endfor %}
+
+                {% include 'paginator.html' with page=posts %}
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}

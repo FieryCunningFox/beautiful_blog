@@ -10,7 +10,7 @@ class TagSearch(admin.ModelAdmin):
 
 
 admin.site.register(blogModel)
-# admin.site.register(, PostAdmin)
+# admin.site.register(User, PostAdmin)
 admin.site.register(Tag)
 admin.site.register(Comment)
 admin.site.register(AuthorProfile)

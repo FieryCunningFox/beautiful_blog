@@ -19,6 +19,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
     'froala_editor',
     'rest_framework',
     'crispy_forms',
+    'taggit',
     
     'home'
 ]

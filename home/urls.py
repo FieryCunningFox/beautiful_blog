@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('profile/', author_profile.as_view(), name="profile"),
     path('posts/<slug>/share/', post_share, name='post_share'),
+    path('posts/search/<tag_slug>/', search_posts, name='post_list_by_tag'),
 ]

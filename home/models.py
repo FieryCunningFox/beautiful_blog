@@ -7,6 +7,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.utils.text import slugify
 import string, random
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 def generate_random_string(N):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k = N))
@@ -95,6 +96,8 @@ class blogModel(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
+    
+    all_tags = TaggableManager()
     
     # status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft') 
     

@@ -11,6 +11,7 @@ from django.utils import timezone
 
 from .models import blogModel, AuthorProfile
 from .forms import CommentForm,  EmailPostForm, FormProfile, QuestionForm
+from taggit.models import Tag
 
 
 def home(request):
@@ -20,8 +21,7 @@ def home(request):
         .select_related("author")
         .defer('created_at', 'modified_at')
     )
-    
-    current_page = Paginator(posts, 10)
+    current_page = Paginator(posts, 7)
     page = request.GET.get('page')
     try:  
         context['posts'] = current_page.page(page)  
@@ -61,7 +61,8 @@ def contact(request):
             
     return render(request, 'contact.html', {'question_form': question_form, })
 
-def posts(request, slug):
+
+def posts(request, slug, tag_slug=None):
     post = get_object_or_404(blogModel, slug=slug)
 
     if request.user.is_authenticated:  # check if the user is active
@@ -79,6 +80,29 @@ def posts(request, slug):
     else:
         comment_form = None
     return render(request, 'posts.html', {"post": post, "comment_form": comment_form})
+
+def search_posts(request, tag_slug):
+    context = {}
+    posts = (
+        blogModel.objects.filter(published_at__lte=timezone.now())
+        .select_related("author")
+        .defer('created_at', 'modified_at')
+    )
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = posts.filter(all_tags__in=[tag])
+    
+    current_page = Paginator(posts, 7)
+    page = request.GET.get('page')
+    try:  
+        context['posts'] = current_page.page(page)  
+    except PageNotAnInteger:
+        context['posts'] = current_page.page(1)  
+    except EmptyPage:
+        context['posts'] = current_page.page(current_page.num_pages)
+    context['tag'] = tag
+        
+    return render(request, 'posts_tag_list.html', context)
+    
 
 def post_share(request, slug):  
     post = get_object_or_404(blogModel, slug=slug, published_at__lte=timezone.now())

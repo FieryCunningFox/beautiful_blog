@@ -1,10 +1,15 @@
 {% load crispy_forms_tags blog_extras %}
 
-<h4 style="text-align:center; margin-top: 50px; font-weight: 500; font-size: 38px;">Comments</h4>
+{% with post.comments.all.count as total_comments %}
+<h4 style="text-align:center; margin-top: 50px; margin-bottom: 30px; font-weight: 500; font-size: 38px;">
+    {{ total_comments }} comment{{ total_comments|pluralize }}
+</h4>
+
+{% endwith %}
 {% for comment in post.comments.all %}
     {% row "border-top pt-2" %}
         {% col %}
-            <h5>Posted by {{ comment.creator }} at {{ comment.created_at|date:"M, d Y h:i" }} </h5>
+            <h5>Posted by {{ comment.creator|author_details:request.user }} at {{ comment.created_at|date:"M, d Y h:i" }} </h5>
         {% end %}
     {% end %}
     {% row "border-top pt-2" %}
