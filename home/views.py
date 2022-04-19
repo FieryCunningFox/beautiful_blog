@@ -9,8 +9,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-from .models import blogModel
-from .forms import CommentForm,  EmailPostForm
+from .models import blogModel, AuthorProfile
+from .forms import CommentForm,  EmailPostForm, FormProfile, QuestionForm
 
 
 def home(request):
@@ -36,7 +36,30 @@ def about(request):
     return render(request, 'about.html')
 
 def contact(request):
-    return render(request, 'contact.html')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            question_form = QuestionForm(request.POST)
+            
+            if question_form.is_valid():
+                question = question_form.save(commit=False)
+                question.creator = request.user
+                question.save()
+                return redirect(request.path_info)
+        else:
+            question_form = QuestionForm()
+    else:
+        if request.method == 'POST':
+            question_form = QuestionForm(request.POST)
+            
+            if question_form.is_valid():
+                question = question_form.save(commit=False)
+                question.creator = request.user
+                question.save()
+                return redirect(request.path_info)
+        else:
+            question_form = QuestionForm()
+            
+    return render(request, 'contact.html', {'question': question_form, })
 
 def posts(request, slug):
     post = get_object_or_404(blogModel, slug=slug)
@@ -75,9 +98,12 @@ def post_share(request, slug):
     
 
 class author_profile(TemplateView):
+    # model = AuthorProfile
+    # form_class = FormProfile
     template_name = "author.html"
-
-
+    
+    
+    
 class LoginView(TemplateView):
     form_class = AuthenticationForm
     template_name = "login.html"

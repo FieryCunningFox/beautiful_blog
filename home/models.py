@@ -25,7 +25,6 @@ class AuthorProfile(models.Model):
         verbose_name_plural = "Authors"
         
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
-
     bio = models.TextField()
     instagram = models.CharField(max_length=50, null=True, blank=True)
 
@@ -57,6 +56,22 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.content[:30]} ..."
+    
+
+class Question(models.Model):
+    class Meta:
+        verbose_name_plural = "Questions"
+        
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=100)
+    phone = models.CharField(max_length=20)
+    message = models.TextField(max_length=300)
+    
+    def __str__(self):
+        return f"{self.message[:30]} ..."
+    
+    def save(self, *args, **kwargs):
+        super(Question, self).save(*args, **kwargs)
 
 class blogModel(models.Model):
     

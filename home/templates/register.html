@@ -11,20 +11,24 @@
       <div class="col-md-10 col-lg-8 col-xl-7">
         <form method="post">
           {% csrf_token %}
-          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center; margin-top: 35px;">
+          <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center; margin-top: 35px;">
+            <label class="form-label" for="register_username" style="margin-right: 30px;">Your Name:</label>
             <input type="text" name="register_username" id="username" class="form-control" placeholder="Enter your username..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />
           </div>
 
-          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+          <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center; margin-top: 30px;">
+            <label class="form-label" for="register_email" style="margin-right: 30px;">Your Email:</label>
             <input type="email" name="register_email" id="form3Example3cg" class="form-control" placeholder="Enter your email..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;"/>
           </div>
     
           <!-- Password input -->
-          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+          <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center; margin-top: 30px;">
+            <label class="form-label" for="register_password" style="margin-right: 30px;">Create your password:</label>
             <input type="password" name="register_password" id="password" class="form-control" placeholder="Enter your password..."  style="width: 60%; height: 50px; font-style:italic;"/>
           </div>
 
-          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+          <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center; margin-top: 30px;">
+            <label class="form-label" for="register_repeat_password" style="margin-right: 30px;">Repeat password:</label>
             <input type="password" name="register_repeat_password" id="form3Example4cdg" class="form-control" placeholder="Enter your password again..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />
           </div>
     

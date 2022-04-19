@@ -15,12 +15,14 @@
         {% endif %}
         <form method="post">
           {% csrf_token %}
-          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center; margin-top: 35px;">
+          <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center; margin-top: 35px;">
+            <label class="form-label" for="login_username" style="margin-right: 30px;">Your login:</label>
             <input type="text" name="login_username" id="username" class="form-control" placeholder="Enter your username..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />
           </div>
     
           <!-- Password input -->
-          <div class="form-outline mb-4" style="display: flex; justify-content: center; align-items: center;">
+          <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center;">
+            <label class="form-label" for="login_password" style="margin-right: 30px;">Your password:</label>
             <input type="password" name="login_password" id="password" class="form-control" placeholder="Enter your password..."  style="width: 60%; height: 50px; font-style:italic;"/>
           </div>
     

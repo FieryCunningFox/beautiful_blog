@@ -23,8 +23,6 @@
                         <h1 style="font-weight:normal; text-align:center;">"{{ post.title }}" by e-mail</h1>
                         <form action="." method="post">   
                             {% csrf_token %}
-
-                            
                             <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: center; margin-top: 35px;">
                                 <label for="name" style="margin-right: 20px;">Your name:</label>
                                 <input type="text" name="name" class="form-control" placeholder="Enter your name..." style="width: 60%; height: 50px; margin-bottom:10px;  font-style:italic;" />

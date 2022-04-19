@@ -14,4 +14,4 @@ admin.site.register(blogModel)
 admin.site.register(Tag)
 admin.site.register(Comment)
 admin.site.register(AuthorProfile)
-
+admin.site.register(Question)
