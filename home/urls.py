@@ -15,6 +15,7 @@ urlpatterns = [
     path('posts/search/<tag_slug>/', search_posts, name='post_list_by_tag'),
     path('posts/author/<username>/', about_author, name="about_author"),
     path('add_new_post/', add_new_post, name="add_new_post"),
+    path('edit_post/<slug>', edit_and_publish, name="edit_post"),
     path('news/', news_from_parser, name="news"),
     path('news/<slug>/', news_details, name="news_details"),
 ]

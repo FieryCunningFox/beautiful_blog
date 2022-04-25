@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load blog_extras crispy_forms_tags %}
+{% load blog_extras crispy_forms_tags widget_tweaks %}
 {% load static %}
 
 {% block content %}
@@ -18,19 +18,19 @@
     <article class="mb-4">
         <div class="container px-4 px-lg-5">
           <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="col-md-10 col-lg-8 col-xl-7" style="margin-left: 70px;">
                 <form method="post">
                     {% csrf_token %}
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; margin-top: 35px; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">INSTAGRAM:</label>
-                        {{ profile_form.instagram }}
+                        {% render_field profile_form.instagram class="form-control" placeholder="Enter your INSTAGRAM..." style="width: 700px; height: 50px; margin-bottom:10px; font-style:italic;" %}
                     </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; width: 100%; font-style:italic; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; width: 700px; font-style:italic; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">BIO:</label><br>
-                        {{ profile_form.bio }}
+                        {% render_field profile_form.bio class="form-control" placeholder="Write something about yourself..." style="width: 700px; height: 300px; margin-bottom:10px; font-style:italic;" %}
                     </div>
                     <div class="text-center">
-                    <br><button type="submit" class="btn btn-primary" style="border-radius:10px; padding:12px 35px; margin-top:0px; margin-bottom: 30px; text-align:center; margin-left: 90px;">Update</button>
+                        <br><button type="submit" class="btn btn-primary" style="border-radius:10px; padding:12px 35px; margin-top:0px; margin-bottom: 30px; text-align:center; width: 200px; margin-right: 40px;">Update</button>
                     </div>
                 </form>
             </div>

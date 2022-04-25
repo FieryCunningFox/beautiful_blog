@@ -163,6 +163,25 @@ def profile_information(request):
     
     return render(request, "profile_information.html", {"profile_form": profile_form})
 
+def edit_and_publish(request, slug):
+    author = request.user
+    post = get_object_or_404(blogModel, author=author, slug=slug)
+    if request.method == 'POST':
+        edit_form = blogForm(request.POST)
+        if edit_form.is_valid():
+            post.title = request.POST['title']
+            post.summary = request.POST['summary']
+            post.content = request.POST['content']
+            post.all_tags = request.POST['all_tags']
+            post.image = request.POST['image']
+            post.published_at = request.POST['published_at']
+            post.save()
+            return redirect("profile/")
+    else:
+        edit_form = blogForm(instance=post)
+    return render(request, "add_new_post.html", {"blog_form": edit_form})
+    
+    
 def about_author(request, username):
     user = get_object_or_404(User, username=username)
     author = AuthorProfile.objects.filter(user=user)

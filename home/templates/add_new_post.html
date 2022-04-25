@@ -22,36 +22,32 @@
                 <h1 style="text-align:center; font-weight:normal; font-size: 44px; font-style: italic; margin-left: 50px; margin-top: 50px;">Create new post</h1>
                 <form method="post">
                     {% csrf_token %}
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; justify-content: right; align-items: right; margin-top: 35px; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">Title:</label>
-                        {% render_field blog_form.title class="form-control" placeholder="Enter title..." style="width: 90%; height: 50px; margin-bottom:10px; font-style:italic;"%}
+                        {% render_field blog_form.title class="form-control" placeholder="Enter title..." style="width: 700px; height: 50px; margin-bottom:10px; font-style:italic;"%}
                     </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; justify-content: right; align-items: right; margin-top: 35px; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">Content:</label>
-                        {% render_field blog_form.content class="form-control" placeholder="Your article..." style="width: 90%; height: 50px; margin-bottom:10px; font-style:italic;" %}
+                        {% render_field blog_form.content class="form-control" placeholder="Your article..." style="width: 700px; height: 300px; margin-bottom:10px; font-style:italic;" %}
                     </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">Summary:</label>
-                        {% render_field blog_form.summary class="form-control" placeholder="Enter summary..." style="width: 90%; height: 50px; margin-bottom:10px; font-style:italic;" %}
+                        {% render_field blog_form.summary class="form-control" placeholder="Enter summary..." style="width: 700px; height: 50px; margin-bottom:10px; font-style:italic;" %}
                     </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">Tags:</label>
-                        {% render_field blog_form.content class="form-control" style="width: 90%; height: 50px; margin-bottom:10px; font-style:italic;"%}
+                        {% render_field blog_form.all_tags class="form-control" placeholder="Enter tags to your post..." style="width: 700px; height: 50px; margin-bottom:10px; font-style:italic;"%}
                     </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
+                    <div class="form-outline mb-4" style="display: table-row; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
                         <label class="form-label" for="instagram" style="margin-right: 30px;">Image:</label>
-                        {{ blog_form.image }}
+                        {% render_field blog_form.image class="form-control" style="width: 700px; height: 38px; margin-bottom:10px; font-style:italic;" %}
                     </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
-                        <label class="form-label" for="instagram" style="margin-right: 30px;">Date to publishe:</label>
-                        {{ blog_form.published_at }}
-                    </div>
-                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
-                        <label class="form-label" for="instagram" style="margin-right: 30px;">Title:</label>
-                        {{ blog_form.all_tags }}
+                    <div class="form-outline mb-4" style="display: table-row; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
+                        <label class="form-label" for="instagram" style="margin-right: 30px;">Date to publish:</label>
+                        {% render_field blog_form.published_at class="form-control" style="width: 700px; height: 50px; margin-bottom:10px; font-style:italic;" %}
                     </div>
                     <div class="text-center">
-                    <br><button type="submit" class="btn btn-primary" style="border-radius:10px; padding:12px 35px; margin-top:5px;">Send</button>
+                    <br><button type="submit" class="btn btn-primary" style="border-radius:10px; padding:12px 35px; margin-top:0px;">Send</button>
                     </div>
                 </form>
             </div>
