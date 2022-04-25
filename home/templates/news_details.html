@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load blog_extras crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+    <!-- Page Header-->
+    <header class="masthead" style='background-image: url("{% static 'img/post.jpg' %}");'>
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="post-heading">
+                        <h1>{{ post.title }}</h1>
+                        {% comment %} <div class="tags" style="display: flex; flex-direction: row; item-align: center; width: 100%;">
+                            {% for tag in post.all_tags.all %}
+                                <button class="btn btn-primary" style="border-radius:10px; padding:7px; margin-right:15px; font-style:italic; color: black; margin-bottom: 20px;"><a href="{% url 'post_list_by_tag' tag.slug %}">&middot; {{ tag.slug }} &middot;</a></button>
+                            {% endfor %}
+                        </div> {% endcomment %}
+                        {% if post.summary %}
+                            <h2 class="subheading">{{ post.summary }}</h2>
+                        {% endif %}
+                        <span class="meta">
+                            {% comment %} {% include "post-byline.html" %} {% endcomment %}
+                            <small>({{ post.content|wordcount }} words)</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content-->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    {% if post.image %}
+                    <div class="text-center" style="margin-top: 50px;">
+                        <img src="{{ post.image.url }}" style="width: 80%;">
+                    </div>
+                    {% endif %}
+                    <p>{{ post.content|safe }}</p>
+                        <div class="text-center" style="margin-top: 50px;">
+                            Placeholder text by
+                            <strong style="font-style: italic;"><a href="#" style="padding-right:20px;">{{ post.author }}</a></strong>
+                            &middot; <a href="{% url 'post_share' post.slug %}" style="padding-left:20px; ">Share post</a>
+                        </div>
+                        {% include 'post-comment.html'%}
+                </div>
+            </div>
+        </div> 
+    </article>
+
+{% endblock %}

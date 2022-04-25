@@ -21,11 +21,10 @@ def generate_slug(text):
 
 
 class AuthorProfile(models.Model):
-    
     class Meta:
         verbose_name_plural = "Authors"
         
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="profile")
     bio = models.TextField()
     instagram = models.CharField(max_length=50, null=True, blank=True)
 
@@ -75,18 +74,12 @@ class Question(models.Model):
         super(Question, self).save(*args, **kwargs)
 
 class blogModel(models.Model):
-    
     class Meta:
         verbose_name_plural = "Posts"
     
-    # STATUS_CHOICES = (
-    #     ('draft', 'Draft'), 
-    #     ('published', 'Published'), 
-    # ) 
-    
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    title = models.CharField(max_length=300)
-    content = FroalaField()
+    title = models.CharField(max_length=200)
+    content = FroalaField(options={'toolbarInline': True,})
     summary = models.TextField(max_length=500, blank=True, null=True)
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment)
@@ -98,9 +91,7 @@ class blogModel(models.Model):
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
     
     all_tags = TaggableManager()
-    
-    # status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft') 
-    
+        
     def __str__(self):
         return self.title
     
@@ -112,3 +103,25 @@ class blogModel(models.Model):
         return f'/posts/{self.slug}'
         
 
+class NewsModel(models.Model):
+    class Meta:
+        verbose_name_plural = "News"
+        
+    title = models.CharField(max_length=300, blank=True, null=True)
+    summary = models.CharField(max_length=300, blank=True, null=True)
+    content = models.TextField()
+    image = models.ImageField(upload_to="blog", blank=True, null=True)
+    comments = GenericRelation(Comment)
+    slug = models.SlugField(max_length=50, null=True, blank=True)
+    published_at = models.CharField(max_length=300, null=True, blank=True)
+    
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        self.slug = generate_slug(self.title)
+        super(NewsModel, self).save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        return f'/news{self.sluf}'
+    

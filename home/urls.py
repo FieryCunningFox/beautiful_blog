@@ -9,7 +9,12 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name="register"),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
-    path('profile/', author_profile.as_view(), name="profile"),
+    path('profile/', author_profile, name="profile"),
+    path('profile/author/', profile_information, name="profile_information"),
     path('posts/<slug>/share/', post_share, name='post_share'),
     path('posts/search/<tag_slug>/', search_posts, name='post_list_by_tag'),
+    path('posts/author/<username>/', about_author, name="about_author"),
+    path('add_new_post/', add_new_post, name="add_new_post"),
+    path('news/', news_from_parser, name="news"),
+    path('news/<slug>/', news_details, name="news_details"),
 ]

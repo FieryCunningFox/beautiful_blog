@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load blog_extras crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <header class="masthead" style='height:14em; background-image: url("{% static 'img/profile.jpg' %}");'>
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1 style="text-align:center; font-size:58px; margin-left: 50px;">Update your account</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; margin-top: 35px; width: 100%; padding-right: 60px;">
+                        <label class="form-label" for="instagram" style="margin-right: 30px;">INSTAGRAM:</label>
+                        {{ profile_form.instagram }}
+                    </div>
+                    <div class="form-outline mb-4" style="display: flex; justify-content: right; align-items: right; width: 100%; font-style:italic; padding-right: 60px;">
+                        <label class="form-label" for="instagram" style="margin-right: 30px;">BIO:</label><br>
+                        {{ profile_form.bio }}
+                    </div>
+                    <div class="text-center">
+                    <br><button type="submit" class="btn btn-primary" style="border-radius:10px; padding:12px 35px; margin-top:0px; margin-bottom: 30px; text-align:center; margin-left: 90px;">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+    
+      
+    
+{% endblock %}

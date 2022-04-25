@@ -80,7 +80,6 @@
                 {% for post in posts %}
                 <!-- Post preview-->
                 <div class="post-preview">
-                    <a href="post.html">
                         <h2 class="post-title"><a href="{% url 'posts' post.slug %}">{{ post.title }}</a></h2>
                         <div class="tags" style="display: flex; flex-direction: row; item-align: center; width: 100%;">
                             {% for tag in post.all_tags.all %}
@@ -90,7 +89,6 @@
                         {% if post.summary  %}
                         <h3 class="post-subtitle" style="font-weight:normal">{{ post.summary }}</h3>
                         {% endif %}
-                    </a>
                     <p class="post-meta">
                         {% include "post-byline.html" %}
                         <small>({{ post.content|wordcount }} words)</small>

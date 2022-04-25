@@ -34,8 +34,10 @@ def author_details(author, current_user=None):
         name = f"{author.username}"
 
     if author.email:
-        prefix = format_html('<a href="mailto:{}">', author.email)
-        suffix = format_html("</a>")
+        # prefix = format_html('<a href="mailto:{}">', author.email)
+        # suffix = format_html("</a>")
+        prefix = ""
+        suffix = ""
     else:
         prefix = ""
         suffix = ""

@@ -5,12 +5,19 @@
 {% block content %}
     <!-- Page Header-->
     
-    <header class="masthead" style='background-image: url("{% static 'img/search.jpg' %}");'>
+    <header class="masthead" style='background-image: url("{% static 'img/post.jpg' %}");'>
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="page-heading">
-                        <h1 style="text-align: center; font-size: 42px; font-weight: 400;">Posts tagged with "{{ tag.name }}"</h1>
+                    <div class="post-heading">
+                        {% if author %}
+                            <h1>{{ author.user.username }}</h1>
+                            {% if author.bio %}
+                            <h2 class="subheading">{{ author.bio }}</h2>
+                            {% endif %}
+                        {% else %}
+                            <h1>{{ user.username }}</h1>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -25,7 +32,6 @@
                 {% for post in posts %}
                 <!-- Post preview-->
                 <div class="post-preview">
-                    <a href="post.html">
                         <h2 class="post-title"><a href="{% url 'posts' post.slug %}">{{ post.title }}</a></h2>
                         <div class="tags" style="display: flex; flex-direction: row; item-align: center; width: 100%;">
                             {% for tag in post.all_tags.all %}
@@ -35,7 +41,6 @@
                         {% if post.summary  %}
                         <h3 class="post-subtitle" style="font-weight:normal">{{ post.summary }}</h3>
                         {% endif %}
-                    </a>
                     <p class="post-meta">
                         {% include "post-byline.html" %}
                         <small>({{ post.content|wordcount }} words)</small>

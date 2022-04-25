@@ -9,9 +9,10 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-from .models import blogModel, AuthorProfile
-from .forms import CommentForm,  EmailPostForm, FormProfile, QuestionForm
+from .models import blogModel, AuthorProfile, NewsModel
+from .forms import CommentForm,  EmailPostForm, FormProfile, QuestionForm, blogForm
 from taggit.models import Tag
+import time
 
 
 def home(request):
@@ -32,8 +33,10 @@ def home(request):
         
     return render(request, 'home.html', context)
 
+
 def about(request):
     return render(request, 'about.html')
+
 
 def contact(request):
     if request.user.is_authenticated:
@@ -81,6 +84,7 @@ def posts(request, slug, tag_slug=None):
         comment_form = None
     return render(request, 'posts.html', {"post": post, "comment_form": comment_form})
 
+
 def search_posts(request, tag_slug):
     context = {}
     posts = (
@@ -102,7 +106,7 @@ def search_posts(request, tag_slug):
     context['tag'] = tag
         
     return render(request, 'posts_tag_list.html', context)
-    
+
 
 def post_share(request, slug):  
     post = get_object_or_404(blogModel, slug=slug, published_at__lte=timezone.now())
@@ -121,12 +125,116 @@ def post_share(request, slug):
     return render(request, 'share.html', {"post": post, "form": form, "sent": sent})
     
 
-class author_profile(TemplateView):
-    # model = AuthorProfile
-    # form_class = FormProfile
-    template_name = "author.html"
+def author_profile(request):
+    posts = (
+        blogModel.objects.filter(author=request.user)
+        .defer('created_at', 'modified_at')
+    )
     
+    return render(request, "author.html", {"posts":posts})
+
+
+def profile_information(request):
+    user = request.user
+    person = get_object_or_404(AuthorProfile, user=user)
+    if person is None:
+        if request.method == 'POST':
+            profile_form = FormProfile(request.POST)
+
+            if profile_form.is_valid():
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.save()
+                return redirect(request.path_info)
+        else:
+            profile_form = FormProfile()
+    else:
+        if request.method == 'POST':
+            profile_form = FormProfile(request.POST)
+            if profile_form.is_valid():
+                person.bio = request.POST["bio"]
+                if request.POST["instagram"]:
+                    person.instagram = request.POST["instagram"]
+                person.save()
+                return redirect(request.path_info)
+            
+        else:
+            profile_form = FormProfile(instance=person)
     
+    return render(request, "profile_information.html", {"profile_form": profile_form})
+
+def about_author(request, username):
+    user = get_object_or_404(User, username=username)
+    author = AuthorProfile.objects.filter(user=user)
+    if author is None:
+        author = user
+    posts = (
+        blogModel.objects.filter(published_at__lte=timezone.now(), author=user)
+        .select_related("author")
+        .defer('created_at', 'modified_at')
+    )
+    current_page = Paginator(posts, 7)
+    page = request.GET.get('page')
+    try:  
+        posts = current_page.page(page)  
+    except PageNotAnInteger:
+        posts = current_page.page(1)  
+    except EmptyPage:
+        posts = current_page.page(current_page.num_pages)
+    return render(request, "about_author.html", {"author": author, "posts": posts, "user": user})
+
+
+def add_new_post(request):
+    if request.method == 'POST':
+        blog_form = blogForm(request.POST)
+        
+        if blog_form.is_valid():
+            article = blog_form.save(commit=False)
+            article.author = request.user
+            article.save()
+            return redirect(request.path_info)
+    else:
+        blog_form = blogForm()
+    return render(request, "add_new_post.html", {"blog_form": blog_form})
+
+
+def news_from_parser(request):
+    posts = (
+            NewsModel.objects.all()
+        )
+    number = 20
+    current_page = Paginator(posts, 7)
+    page = request.GET.get('page')
+    context = {}
+    try:  
+        context['posts'] = current_page.page(page)  
+    except PageNotAnInteger:
+        context['posts'] = current_page.page(1)  
+    except EmptyPage:
+        context['posts'] = current_page.page(current_page.num_pages)
+        
+    context['number'] = number
+    return render(request, "news.html", context)
+
+
+def news_details(request, slug):
+    post = get_object_or_404(NewsModel, slug=slug)
+
+    if request.user.is_authenticated:  # check if the user is active
+        if request.method == "POST":
+            comment_form = CommentForm(request.POST)
+
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.content_object = post
+                comment.creator = request.user
+                comment.save()
+                return redirect(request.path_info)
+        else:
+            comment_form = CommentForm()
+    else:
+        comment_form = None
+    return render(request, 'news_details.html', {"post": post, "comment_form": comment_form})
     
 class LoginView(TemplateView):
     form_class = AuthenticationForm

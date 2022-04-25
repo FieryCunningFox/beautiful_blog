@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load blog_extras %}
+{% load blog_extras widget_tweaks %}
 {% load static %}
 
 {% block content %}
@@ -8,8 +8,8 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="page-heading">
-                        <h1 style="font-size:44px;">Your profile</h1>
-                        <span class="subheading">Thank you for being with us!</span>
+                        <h1 style="text-align:center; font-size:58px; margin-left: 50px;">Your profile</h1>
+                        <span class="subheading" style="text-align:center; font-size:30px; margin-left: 50px;">Thank you for being with us!</span>
                     </div>
                 </div>
             </div>
@@ -17,12 +17,40 @@
     </header>
 
     <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="row gx-4 gx-lg-5 justify-content-center" style="margin-left:20px;">
             <div class="col-md-10 col-lg-8 col-xl-7">
             <p>You logged in as {{ request.user.username }}.</p>
+            <a href={% url 'profile_information' %}>Update Profile</a>
             <p><a href="{% url 'logout' %}">Log out</a></p>
             </div>
         </div>
     </div>
+    <div class="text-center" style="margin-top: 50px; margin-left:50px;">
+    <h1>All your posts</h1>
+    </div>
+
+    <div class="container px-4 px-lg-5" style="margin-left: 100px;">
+        {% for post in posts %}
+            {{ post.title }} 
+            {% if post.published_at %}
+                <a href="{% url 'posts' post.slug %}" style="margin-left:50px; width: 200px;">allready published!</a>
+            {% else %}
+                <a href="#" style="margin-left:50px">have not published yet!</a>
+            {% endif %}
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}" style="width:15%; margin-left:50px">
+            {% endif %}<br>
+            <br>
+        {% endfor %}
+    </div>
+
+    <div class="text-center">
+        <!-- Submit button -->
+        <a href="{% url 'add_new_post' %}" style="border-radius:10px; padding:12px 30px; margin-bottom:80px;">
+            Add new post
+        </a>
+    </div>
+
     
 {% endblock %}
