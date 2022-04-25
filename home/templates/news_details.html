@@ -41,9 +41,8 @@
                     {% endif %}
                     <p>{{ post.content|safe }}</p>
                         <div class="text-center" style="margin-top: 50px;">
-                            Placeholder text by
-                            <strong style="font-style: italic;"><a href="#" style="padding-right:20px;">{{ post.author }}</a></strong>
-                            &middot; <a href="{% url 'post_share' post.slug %}" style="padding-left:20px; ">Share post</a>
+                            Watch original article form 
+                            <strong style="font-style: italic;"><a href="{{ post.link }}" style="padding-right:20px;">FOXNEWS</a></strong>
                         </div>
                         {% include 'post-comment.html'%}
                 </div>

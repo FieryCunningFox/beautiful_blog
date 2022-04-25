@@ -11,7 +11,7 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="post-heading">
-                        <h1>Count articles: {{number}}</h1>
+                        <h1>Hot news</h1>
                     </div>
                 </div>
             </div>
@@ -23,19 +23,17 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 {% for post in posts %}
-                <!-- Post preview-->
-                <div class="post-preview">
+                    <div class="post-preview">
                         <h2 class="post-title"><a href="{% url 'news_details' post.slug %}">{{ post.title }}</a></h2>
-                        </div>
-                        {% if post.summary  %}
-                        <h3 class="post-subtitle" style="font-weight:normal">{{ post.summary }}</h3>
+                        {% if post.summary %}
+                            <h3 class="post-subtitle" style="font-weight:normal">{{ post.summary|safe }}</h3>
                         {% endif %}
-                    <p class="post-meta">
-                        <small>({{ post.content|wordcount }} words)</small>
-                    </p>
-                </div>
+                        <p class="post-meta">
+                            <small>({{ post.content|wordcount }} words)</small>
+                        </p>
+                    </div>
                 <!-- Divider-->
-                <hr class="my-4" />
+                    <hr class="my-4" />
                 {% endfor %}
 
                 {% include 'paginator.html' with page=posts %}

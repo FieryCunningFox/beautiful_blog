@@ -50,20 +50,20 @@ def run_process(browser, links):
     number_articles = 0
     for link_article in links:
         if connect_to_site(browser, link_article):
-            # time.sleep(2)
+            time.sleep(2)
             # html = browser.page_source
             html = requests.get(link_article)
-            output_article = parse_html_article(html.text)
+            output_article = parse_html_article(html.text, link_article)
             print(output_article)
             if output_article is not None:
                 number_articles += 1
                 output_list_articles.append(output_article)
-        if number_articles >= 1:
+        if number_articles >= 5:
             break
     return output_list_articles
 
 
-def parse_html_article(html):
+def parse_html_article(html, link_article):
     soup_article = BeautifulSoup(html, "html.parser")
     errors = 0
     title = ""
@@ -85,7 +85,7 @@ def parse_html_article(html):
         errors += 1
     try:
         if content := soup_article.find_all("p", class_="speakable"):
-            article = str(content[0])
+            article = '\n'.join(map(str, content))
         else:
             return None
     except Exception as e:
@@ -94,7 +94,7 @@ def parse_html_article(html):
     if errors == 0:
         slug = "-".join(map(str, title.split()))
         id = len(slug)
-    return (id, title, summary, None, slug, time_published, article) if errors == 0 else None
+    return (id, title, summary, article, None, slug, time_published, link_article) if errors == 0 else None
     # return {'id': id, 'title': title, 'summary': summary, 'image': None, 'slug': slug, 'time_published': time_published, 'content': article} if errors == 0 else None
 
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     cursor = conn.cursor()
     
     cursor.executemany("""INSERT INTO home_newsmodel
-                   VALUES (?, ?, ?, ?, ?, ?, ?)""", articles)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", articles)
     conn.commit()
 # number = len(articles)
 # if articles is not None:

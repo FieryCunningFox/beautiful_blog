@@ -114,6 +114,7 @@ class NewsModel(models.Model):
     comments = GenericRelation(Comment)
     slug = models.SlugField(max_length=50, null=True, blank=True)
     published_at = models.CharField(max_length=300, null=True, blank=True)
+    link = models.CharField(max_length=300, null=True, blank=True)
     
     def __str__(self):
         return self.title
