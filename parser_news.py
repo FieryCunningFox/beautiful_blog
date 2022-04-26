@@ -13,6 +13,12 @@ from django.utils.text import slugify
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+CONN = sqlite3.connect("db.sqlite3")
+CURSOR = CONN.cursor()
+QUERY = """SELECT * FROM home_newsmodel"""
+CURSOR.execute(QUERY)
+NUMBER_NEWS = len(CURSOR.fetchall())
+
 
 
 def generate_random_string(N):
@@ -53,17 +59,18 @@ def run_process(browser, links):
             time.sleep(2)
             # html = browser.page_source
             html = requests.get(link_article)
-            output_article = parse_html_article(html.text, link_article)
+            output_article = parse_html_article(html.text, link_article, number_articles)
             print(output_article)
             if output_article is not None:
                 number_articles += 1
                 output_list_articles.append(output_article)
-        if number_articles >= 5:
+        if number_articles >= 10:
             break
     return output_list_articles
 
 
-def parse_html_article(html, link_article):
+def parse_html_article(html, link_article, number_articles):
+    # sourcery skip: avoid-builtin-shadow
     soup_article = BeautifulSoup(html, "html.parser")
     errors = 0
     title = ""
@@ -93,9 +100,8 @@ def parse_html_article(html, link_article):
         errors += 1
     if errors == 0:
         slug = "-".join(map(str, title.split()))
-        id = len(slug)
+        id = NUMBER_NEWS + number_articles
     return (id, title, summary, article, None, slug, time_published, link_article) if errors == 0 else None
-    # return {'id': id, 'title': title, 'summary': summary, 'image': None, 'slug': slug, 'time_published': time_published, 'content': article} if errors == 0 else None
 
 
 def connect_to_site(browser, link_article):
@@ -117,25 +123,7 @@ def connect_to_site(browser, link_article):
 
 if __name__ == "__main__":
     articles = parse_news()
-    conn = sqlite3.connect("db.sqlite3")
-    cursor = conn.cursor()
     
-    cursor.executemany("""INSERT INTO home_newsmodel
+    CURSOR.executemany("""INSERT INTO home_newsmodel
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", articles)
-    conn.commit()
-# number = len(articles)
-# if articles is not None:
-#     for article in articles:
-#         new_news = NewsModel()
-#         new_news.title = article['title']
-#         new_news.summary = article['summary']
-#         new_news.published_at = article['time_published']
-#         new_news.content = article['content']
-#         new_news.save()
-        
-#     posts = (
-#         NewsModel.objects.filter(published_at__lte=timezone.now())
-#     )
-# else:
-#     number = 0
-#     posts = []  
+    CONN.commit()
