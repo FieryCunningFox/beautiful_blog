@@ -70,7 +70,6 @@ def run_process(browser, links):
 
 
 def parse_html_article(html, link_article, number_articles):
-    # sourcery skip: avoid-builtin-shadow
     soup_article = BeautifulSoup(html, "html.parser")
     errors = 0
     title = ""
