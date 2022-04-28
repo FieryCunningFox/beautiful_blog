@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from .views import home, about, contact, posts, RegisterView, LoginView, LogoutView, author_profile, profile_information, post_share, search_posts, about_author, edit_and_publish, news_from_parser, news_details, add_new_post
 
 urlpatterns = [
     path('', home, name="home"),

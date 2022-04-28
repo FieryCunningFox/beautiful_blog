@@ -7,7 +7,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.utils.text import slugify
 import string, random
 from django.utils import timezone
-from taggit.managers import TaggableManager
+# from taggit.managers import TaggableManager
 
 def generate_random_string(N):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k = N))
@@ -46,7 +46,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name_plural = "Comments"
         
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=300, verbose_name="")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(db_index=True)
@@ -77,7 +77,7 @@ class blogModel(models.Model):
     class Meta:
         verbose_name_plural = "Posts"
     
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
     title = models.CharField(max_length=200)
     content = FroalaField(options={'toolbarInline': True,})
     summary = models.TextField(max_length=500, blank=True, null=True)
@@ -90,7 +90,7 @@ class blogModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
     
-    all_tags = TaggableManager()
+    # all_tags = TaggableManager()
         
     def __str__(self):
         return self.title

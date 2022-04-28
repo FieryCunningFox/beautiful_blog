@@ -1,7 +1,7 @@
 from django import forms
 from .models import Comment, AuthorProfile, Question, blogModel
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Div
+from crispy_forms.layout import Submit
 
 from froala_editor.widgets import FroalaEditor
 
@@ -23,7 +23,7 @@ class CommentForm(forms.ModelForm):
 class blogForm(forms.ModelForm):
     class Meta:
         model = blogModel
-        fields = ["title", "content", "summary", "tags", "image", "published_at", "all_tags"]
+        fields = ["title", "content", "summary", "tags", "image", "published_at"]
     
     content = forms.CharField(widget=FroalaEditor)
     summary = forms.CharField(widget=FroalaEditor)

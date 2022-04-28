@@ -1,7 +1,8 @@
 from pathlib import Path
 import os
+# from os import environ
 
-TIME_ZONE = 'Europe/Moscow'
+
 USE_TZ = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -10,11 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-i0_2hpb=i966+7sw^a*wc+7baxc7n$851@sp2sq9n0=3l^ktw#'
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost']
 
 
 # Application definition
@@ -27,11 +29,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     
     'froala_editor',
     'rest_framework',
     'crispy_forms',
-    'taggit',
+    # 'taggit',
     'widget_tweaks',
     
     'home',
@@ -73,8 +76,21 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'blog_db',
+        'USER': 'svetlanarudneva',
+        'PASSWORD': 'cj,frfjhtk2003',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        
+        # 'NAME': os.environ.get('DB_NAME'),
+        # 'USER': os.environ.get('USER'),
+        # 'PASSWORD': os.environ.get('DB_PASSWORD'),
+        # 'HOST': 'localhost',
+        # 'PORT': os.environ.get('DB_PORT'),
+        
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': 'db.sqlite3',
     }
 }
 
@@ -103,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -172,3 +188,5 @@ FROALA_EDITOR_PLUGINS = ('align', 'char_counter', 'code_beautifier' ,'code_view'
         'entities', 'file', 'font_family', 'font_size', 'fullscreen', 'image_manager', 'image', 'inline_style',
         'line_breaker', 'link', 'html','lists', 'paragraph_format', 'paragraph_style', 'quick_insert', 'quote', 'save', 'table',
         'url', 'video')
+
+# AUTH_USER_MODEL = 'users.CustomUser'

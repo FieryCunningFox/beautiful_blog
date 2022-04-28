@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from .models import blogModel, AuthorProfile, NewsModel
 from .forms import CommentForm,  EmailPostForm, FormProfile, QuestionForm, blogForm
-from taggit.models import Tag
+# from taggit.models import Tag
 import time
 
 
@@ -172,7 +172,7 @@ def edit_and_publish(request, slug):
             post.title = request.POST['title']
             post.summary = request.POST['summary']
             post.content = request.POST['content']
-            post.all_tags = request.POST['all_tags']
+            post.all_tags = request.POST['tags']
             post.image = request.POST['image']
             post.published_at = request.POST['published_at']
             post.save()
