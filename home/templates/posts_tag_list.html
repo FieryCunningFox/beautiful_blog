@@ -10,7 +10,7 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="page-heading">
-                        <h1 style="text-align: center; font-size: 42px; font-weight: 400;">Posts tagged with "{{ tag.name }}"</h1>
+                        <h1 style="text-align: center; font-size: 42px; font-weight: 400;">Posts tagged with "{{ tag.value }}"</h1>
                     </div>
                 </div>
             </div>
@@ -28,8 +28,8 @@
                     <a href="post.html">
                         <h2 class="post-title"><a href="{% url 'posts' post.slug %}">{{ post.title }}</a></h2>
                         <div class="tags" style="display: flex; flex-direction: row; item-align: center; width: 100%;">
-                            {% for tag in post.all_tags.all %}
-                                <button class="btn btn-primary" style="border-radius:10px; padding:7px; margin-right:15px; font-style:italic; color: black; margin-bottom: 20px;"><a href="{% url 'post_list_by_tag' tag.slug %}">&middot; {{ tag.slug }} &middot;</a></button>
+                            {% for tag in post.tags.all %}
+                                <button class="btn btn-primary" style="border-radius:10px; padding:7px; margin-right:15px; font-style:italic; color: black; margin-bottom: 20px;"><a href="{% url 'post_list_by_tag' tag.value %}">&middot; {{ tag.value }} &middot;</a></button>
                             {% endfor %}
                         </div>
                         {% if post.summary  %}

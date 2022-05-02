@@ -9,7 +9,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-from .models import blogModel, AuthorProfile, NewsModel
+from .models import blogModel, AuthorProfile, NewsModel, Tag
 from .forms import CommentForm,  EmailPostForm, FormProfile, QuestionForm, blogForm
 # from taggit.models import Tag
 import time
@@ -92,8 +92,8 @@ def search_posts(request, tag_slug):
         .select_related("author")
         .defer('created_at', 'modified_at')
     )
-    tag = get_object_or_404(Tag, slug=tag_slug)
-    posts = posts.filter(all_tags__in=[tag])
+    tag = get_object_or_404(Tag, value=tag_slug)
+    posts = posts.filter(tags__in=[tag])
     
     current_page = Paginator(posts, 7)
     page = request.GET.get('page')
@@ -162,6 +162,7 @@ def profile_information(request):
             profile_form = FormProfile(instance=person)
     
     return render(request, "profile_information.html", {"profile_form": profile_form})
+
 
 def edit_and_publish(request, slug):
     author = request.user
@@ -255,6 +256,7 @@ def news_details(request, slug):
         comment_form = None
     return render(request, 'news_details.html', {"post": post, "comment_form": comment_form})
     
+    
 class LoginView(TemplateView):
     form_class = AuthenticationForm
     template_name = "login.html"
@@ -310,3 +312,5 @@ class LogoutView(TemplateView):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect("/")
+    
+    

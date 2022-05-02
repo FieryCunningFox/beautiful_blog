@@ -4,6 +4,7 @@ from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
+
 class loginView(APIView):
     
     def post(self, request):
