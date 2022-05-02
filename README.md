@@ -1,5 +1,5 @@
 # beautiful_blog
-blog with django, CSS, HTML and JavaScript
+blog with django, CSS, HTML and JavaScript, postgresql as Database
 there is also parser news from FOXNEWS
 
 to connect db:
@@ -12,13 +12,15 @@ to create db:
   $ init blog_db
 
 to start:
-  $pip install -r requirements.txt
-  $python manage.py runserver
+  $ pip install -r requirements.txt
+  $ python manage.py runserver
   
-  
+to start docker-container:
+  $ sudo docker build -t dmosk/nginx:v1 . - in Dockerfile directory
+
 to parse news:
-  $python parser_news.py
+  $python3 parser_news.py
 
 
 
-$ virtualenv blog_en
+$ virtualenv blog_env

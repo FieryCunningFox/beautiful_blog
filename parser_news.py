@@ -1,5 +1,7 @@
 import requests
 from pathlib import Path
+import psycopg2
+from psycopg2 import sql
 import sqlite3
 import time
 import string
@@ -13,12 +15,20 @@ from django.utils.text import slugify
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CONN = sqlite3.connect("db.sqlite3")
+# CONN = psycopg2.connect(
+#     database="blog_db",
+#     user="svetlanarudneva",
+#     password="cj,frfjhtk2003",
+#     host="localhost",
+#     port="5432"
+# )
+CONN = sqlite3.connect('db.sqlite3')
+
+COLUMNS = ("title", "summary", "content", "image", "slug", "published_at", "link")
+
 CURSOR = CONN.cursor()
 QUERY = """SELECT * FROM home_newsmodel"""
 CURSOR.execute(QUERY)
-NUMBER_NEWS = len(CURSOR.fetchall())
-
 
 
 def generate_random_string(N):
@@ -44,7 +54,7 @@ def parse_news():
     soup = BeautifulSoup(response.text, "html.parser")
     blocks = soup.select(
         ".collection.collection-article-list .content.article-list .article")
-    soup_urls = BeautifulSoup(str(blocks), features="lxml")
+    soup_urls = BeautifulSoup(str(blocks), features="html.parser")
     project_href = [i['href']
         for i in soup_urls.find_all('a', href=True) if i['href'] != "#"]
     project_href = list(set(project_href))
@@ -56,7 +66,7 @@ def run_process(browser, links):
     number_articles = 0
     for link_article in links:
         if connect_to_site(browser, link_article):
-            time.sleep(2)
+            # time.sleep(2)
             # html = browser.page_source
             html = requests.get(link_article)
             output_article = parse_html_article(html.text, link_article, number_articles)
@@ -76,10 +86,10 @@ def parse_html_article(html, link_article, number_articles):
     summary = " "
     time_published = ""
     if title := soup_article.find("h1"):
-        title = title.text
+        title = str(title.text)
     try:
         summary = soup_article.find("h2", class_="sub-headline")
-        summary = summary.text
+        summary = str(summary.text)
     except Exception as e:
         # print(e)
         errors += 1
@@ -98,9 +108,8 @@ def parse_html_article(html, link_article, number_articles):
         # print(e)
         errors += 1
     if errors == 0:
-        slug = "-".join(map(str, title.split()))
-        id = NUMBER_NEWS + number_articles
-    return (id, title, summary, article, None, slug, time_published, link_article) if errors == 0 else None
+        slug = "-".join(map(str, title.split()))[:70]
+    return (title, summary, article, None, slug, time_published, link_article) if errors == 0 else None
 
 
 def connect_to_site(browser, link_article):
@@ -123,6 +132,9 @@ def connect_to_site(browser, link_article):
 if __name__ == "__main__":
     articles = parse_news()
     
-    CURSOR.executemany("""INSERT INTO home_newsmodel
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", articles)
+    # insert = sql.SQL('INSERT INTO home_newsmodel("title", "summary", "content", "image", "slug", "published_at", "link") VALUES (%s, %s, %s, %s, %s, %s, %s)')
+    CURSOR.executemany("""INSERT INTO home_newsmodel(title, summary, content, image, slug, published_at, link) VALUES (?, ?, ?, ?, ?, ?, ?)""", articles)    # CURSOR.executemany(insert, articles)
+    
+    # for i in range(len(articles)):
+    #     CURSOR.execute("""INSERT INTO home_newsmodel(title, summary, content, image, slug, published_at, link) VALUES {}""".format(articles[i],))
     CONN.commit()

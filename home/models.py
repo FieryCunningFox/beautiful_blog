@@ -108,11 +108,11 @@ class NewsModel(models.Model):
         verbose_name_plural = "News"
         
     title = models.CharField(max_length=300, blank=True, null=True)
-    summary = models.CharField(max_length=300, blank=True, null=True)
+    summary = models.CharField(max_length=600, blank=True, null=True)
     content = models.TextField()
     image = models.ImageField(upload_to="blog", blank=True, null=True)
     comments = GenericRelation(Comment)
-    slug = models.SlugField(max_length=50, null=True, blank=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
     published_at = models.CharField(max_length=300, null=True, blank=True)
     link = models.CharField(max_length=300, null=True, blank=True)
     

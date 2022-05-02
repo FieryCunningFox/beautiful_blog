@@ -25,11 +25,11 @@ ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     
     'froala_editor',
     'rest_framework',
@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'blog_db',
-        'USER': 'svetlanarudneva',
-        'PASSWORD': 'cj,frfjhtk2003',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'blog_db',
+        # 'USER': 'svetlanarudneva',
+        # 'PASSWORD': 'cj,frfjhtk2003',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432',
         
         # 'NAME': os.environ.get('DB_NAME'),
         # 'USER': os.environ.get('USER'),
@@ -89,8 +89,8 @@ DATABASES = {
         # 'HOST': 'localhost',
         # 'PORT': os.environ.get('DB_PORT'),
         
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -190,3 +190,5 @@ FROALA_EDITOR_PLUGINS = ('align', 'char_counter', 'code_beautifier' ,'code_view'
         'url', 'video')
 
 # AUTH_USER_MODEL = 'users.CustomUser'
+
+SITE_ID=1
