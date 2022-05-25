@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load blog_extras widget_tweaks %}
 {% load static %}
 
 {% block content %}
@@ -24,45 +25,38 @@
                     <div class="my-5">
                         <form id="contactForm" method="post">
                             {% csrf_token %}
-                            {{ question_form.as_p }}
                             <div class="form-floating">
-                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                {% render_field question_form.name class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required"%}
                                 <label for="name">Name</label>
                                 <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="email" type="email" placeholder="Enter your email..." data-sb-validations="required,email" />
+                                {% render_field question_form.email class="form-control" id="email" type="email" placeholder="Enter your email..." data-sb-validations="required,email"%}
                                 <label for="email">Email address</label>
                                 <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                                 <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="phone" type="tel" placeholder="Enter your phone number..." data-sb-validations="required" />
+                                {% render_field question_form.phone class="form-control" id="phone" type="tel" placeholder="Enter your phone number..." data-sb-validations="required"%}
                                 <label for="phone">Phone Number</label>
                                 <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
                             </div>
                             <div class="form-floating">
-                                <textarea class="form-control" id="message" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
+                                {% render_field question_form.message class="form-control" id="message" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"%}
                                 <label for="message">Message</label>
                                 <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                             </div>
                             <br />
-                            <!-- Submit success message-->
-                            <!---->
-                            <!-- This is what your users will see when the form-->
-                            <!-- has successfully submitted-->
+                            
                             <div class="d-none" id="submitSuccessMessage">
                                 <div class="text-center mb-3">
                                     <div class="fw-bolder">Form submission successful!</div>
                                 </div>
                             </div>
-                            <!-- Submit error message-->
-                            <!---->
-                            <!-- This is what your users will see when there is-->
-                            <!-- an error submitting the form-->
+                            
                             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                             <!-- Submit Button-->
-                            <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit" style="border-radius:10px; padding:12px 35px; margin-top:5px;">Send</button>
+                            <button class="btn btn-primary" id="submitButton" type="submit" style="border-radius:10px; padding:12px 35px; margin-top:5px;">Send</button>
                         </form>
                     </div>
                 </div>
