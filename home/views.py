@@ -12,8 +12,6 @@ from django.utils import timezone
 from .models import blogModel, AuthorProfile, NewsModel, Tag
 from .forms import CommentForm, EmailPostForm, FormProfile, QuestionForm, blogForm
 
-import time
-
 
 def home(request):
     context = {}
@@ -39,29 +37,16 @@ def about(request):
 
 
 def contact(request):
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            question_form = QuestionForm(request.POST)
+    if request.method == "POST":
+        question_form = QuestionForm(request.POST)
 
-            if question_form.is_valid():
-                question = question_form.save(commit=False)
-                question.creator = request.user
-                question.save()
-                return redirect(request.path_info)
-        else:
-            question_form = QuestionForm()
+        if question_form.is_valid():
+            question = question_form.save(commit=False)
+            question.creator = request.user
+            question.save()
+            return redirect(request.path_info)
     else:
-        if request.method == "POST":
-            question_form = QuestionForm(request.POST)
-
-            if question_form.is_valid():
-                question = question_form.save(commit=False)
-                question.creator = request.user
-                question.save()
-                return redirect(request.path_info)
-        else:
-            question_form = QuestionForm()
-
+        question_form = QuestionForm()
     return render(
         request,
         "contact.html",
@@ -123,9 +108,8 @@ def post_share(request, slug):
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
             subject = f"""{cd['name']} ({cd['email']}) recommends you reading "{post.title}\""""
-            message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(
-                post.title, post_url, cd["name"], cd["comments"]
-            )
+            message = f"""Read "{post.title}" at {post_url}\n\n{cd["name"]}\'s comments: {cd["comments"]}"""
+
             send_mail(subject, message, "svetl.rudnewa2014@yandex.ru", [cd["to"]])
             sent = True
     else:
@@ -155,18 +139,17 @@ def profile_information(request):
                 return redirect(request.path_info)
         else:
             profile_form = FormProfile()
-    else:
-        if request.method == "POST":
-            profile_form = FormProfile(request.POST)
-            if profile_form.is_valid():
-                person.bio = request.POST["bio"]
-                if request.POST["instagram"]:
-                    person.instagram = request.POST["instagram"]
-                person.save()
-                return redirect(request.path_info)
+    elif request.method == "POST":
+        profile_form = FormProfile(request.POST)
+        if profile_form.is_valid():
+            person.bio = request.POST["bio"]
+            if request.POST["instagram"]:
+                person.instagram = request.POST["instagram"]
+            person.save()
+            return redirect(request.path_info)
 
-        else:
-            profile_form = FormProfile(instance=person)
+    else:
+        profile_form = FormProfile(instance=person)
 
     return render(request, "profile_information.html", {"profile_form": profile_form})
 
@@ -304,12 +287,12 @@ class RegisterView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         context = {}
         if request.method == "POST":
-            username = request.POST["register_username"]
-            email = request.POST["register_email"]
             password1 = request.POST["register_password"]
             password2 = request.POST["register_repeat_password"]
 
             if password1 == password2:
+                username = request.POST["register_username"]
+                email = request.POST["register_email"]
                 User.objects.create_user(username, email, password1)
                 return redirect(reverse("login"))
             else:

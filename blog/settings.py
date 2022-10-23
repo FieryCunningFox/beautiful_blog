@@ -2,33 +2,22 @@ from pathlib import Path
 import os
 import environ
 
-# from os import environ
-
 
 env = environ.Env()
+BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 USE_TZ = True
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
-# SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "localhost"]
 
-
-# Application definition
-
-
 INSTALLED_APPS = [
-    "django.contrib.auth",
     "django.contrib.admin",
+    "django.contrib.auth",
     "django.contrib.sites",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -37,7 +26,6 @@ INSTALLED_APPS = [
     "froala_editor",
     "rest_framework",
     "crispy_forms",
-    # 'taggit',
     "widget_tweaks",
     "home",
 ]
@@ -56,15 +44,15 @@ ROOT_URLCONF = "blog.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -130,7 +118,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = "/media/"
-STATIC_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -192,15 +180,10 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
-<<<<<<< HEAD
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-=======
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_PORT = env("EMAIL_HOST")
 EMAIL_HOST_USER = env("EMAIL_HOST")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST")
->>>>>>> 5e7e056 (refactoring)
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 SERVER_EMAIL = EMAIL_HOST_USER
@@ -239,8 +222,4 @@ FROALA_EDITOR_PLUGINS = (
 
 # AUTH_USER_MODEL = 'users.CustomUser'
 
-<<<<<<< HEAD
-SITE_ID=1
-=======
 SITE_ID = 1
->>>>>>> 5e7e056 (refactoring)

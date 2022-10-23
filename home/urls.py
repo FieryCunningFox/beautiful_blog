@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from blog.views import (
+from home.views import (
     home,
     about,
     contact,
