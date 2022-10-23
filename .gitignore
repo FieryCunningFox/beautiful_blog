@@ -1,0 +1,10 @@
+.env
+__pycache__
+.coverage
+.vscode/
+images/
+.DS_Store
+.kolo
+node_modules/
+nginx-conf.d/
+migrations/
