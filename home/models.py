@@ -1,37 +1,35 @@
 from django.db import models
 from django.contrib.auth.models import User
 from froala_editor.fields import FroalaField
-from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.utils.text import slugify
 import string, random
-from django.utils import timezone
 
 
-def generate_random_string(N):
-    return "".join(random.choices(string.ascii_uppercase + string.digits, k=N))
+def generate_random_string(n: int):
+    return "".join(random.choices(string.ascii_uppercase + string.digits, k=n))
 
 
 def generate_slug(text):
     new_slug = slugify(text)
-    if blogModel.objects.filter(slug=new_slug).exists():
+    if Post.objects.filter(slug=new_slug).exists():
         generate_slug(text + generate_random_string(5))
     return new_slug
 
 
-class AuthorProfile(models.Model):
-    class Meta:
-        verbose_name_plural = "Authors"
+# class AuthorProfile(models.Model):
+#     class Meta:
+#         verbose_name_plural = "Authors"
 
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, null=True, related_name="profile"
-    )
-    bio = models.TextField()
-    instagram = models.CharField(max_length=50, null=True, blank=True)
+#     user = models.OneToOneField(
+#         User, on_delete=models.CASCADE, null=True, related_name="profile"
+#     )
+#     bio = models.TextField()
+#     instagram = models.CharField(max_length=50, null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.__class__.__name__} object for {self.user}"
+#     def __str__(self):
+#         return f"{self.__class__.__name__} object for {self.user}"
 
 
 class Tag(models.Model):
@@ -76,7 +74,7 @@ class Question(models.Model):
         super(Question, self).save(*args, **kwargs)
 
 
-class blogModel(models.Model):
+class Post(models.Model):
     class Meta:
         verbose_name_plural = "Posts"
 
@@ -104,7 +102,7 @@ class blogModel(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = generate_slug(self.title)
-        super(blogModel, self).save(*args, **kwargs)
+        super(Post, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return f"/posts/{self.slug}"

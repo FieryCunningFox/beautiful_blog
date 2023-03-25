@@ -1,17 +1,21 @@
-FROM python:3.8.3-slim-buster
+FROM python:3.11.0-buster
 
-WORKDIR /blog
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# forbid .pyc file recording
-# forbid bufferization
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONBUFFERED=1
+RUN mkdir -p /code/
+WORKDIR /code/
 
-WORKDIR /blog
+# install dependencies
+RUN python -m pip install --upgrade pip
+ADD requirements.txt /code/
+RUN python -m pip install --upgrade pip
+RUN python -m pip install -r requirements.txt
 
-COPY . .
+COPY . /code/
+RUN python manage.py collectstatic --no-input
 
-RUN pip3 install --upgrade pip3
-RUN pip3 install -r requirements.txt
-RUN export PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+EXPOSE 8000
 
-
+CMD ["gunicorn", "-c", "./gunicorn/conf.py", "--bind", ":8000", "--chdir", "blog", "blog.wsgi:application"]

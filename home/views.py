@@ -9,14 +9,14 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-from .models import blogModel, AuthorProfile, NewsModel, Tag
-from .forms import CommentForm, EmailPostForm, FormProfile, QuestionForm, blogForm
+from home.models import Post, NewsModel, Tag
+from home.forms import CommentForm, EmailPostForm, QuestionForm, PostForm
 
 
 def home(request):
     context = {}
     posts = (
-        blogModel.objects.filter(published_at__lte=timezone.now())
+        Post.objects.filter(published_at__lte=timezone.now())
         .select_related("author")
         .defer("created_at", "modified_at")
     )
@@ -57,7 +57,7 @@ def contact(request):
 
 
 def posts(request, slug, tag_slug=None):
-    post = get_object_or_404(blogModel, slug=slug)
+    post = get_object_or_404(Post, slug=slug)
 
     if request.user.is_authenticated:  # check if the user is active
         if request.method == "POST":
@@ -79,7 +79,7 @@ def posts(request, slug, tag_slug=None):
 def search_posts(request, tag_slug):
     context = {}
     posts = (
-        blogModel.objects.filter(published_at__lte=timezone.now())
+        Post.objects.filter(published_at__lte=timezone.now())
         .select_related("author")
         .defer("created_at", "modified_at")
     )
@@ -100,7 +100,7 @@ def search_posts(request, tag_slug):
 
 
 def post_share(request, slug):
-    post = get_object_or_404(blogModel, slug=slug, published_at__lte=timezone.now())
+    post = get_object_or_404(Post, slug=slug, published_at__lte=timezone.now())
     sent = False
     if request.method == "POST":
         form = EmailPostForm(request.POST)
@@ -118,7 +118,7 @@ def post_share(request, slug):
 
 
 def author_profile(request):
-    posts = blogModel.objects.filter(author=request.user).defer(
+    posts = Post.objects.filter(author=request.user).defer(
         "created_at", "modified_at"
     )
 
@@ -127,38 +127,38 @@ def author_profile(request):
 
 def profile_information(request):
     user = request.user
-    person = get_object_or_404(AuthorProfile, user=user)
-    if person is None:
-        if request.method == "POST":
-            profile_form = FormProfile(request.POST)
+    # person = get_object_or_404(AuthorProfile, user=user)
+    # if person is None:
+    #     if request.method == "POST":
+    #         profile_form = FormProfile(request.POST)
 
-            if profile_form.is_valid():
-                profile = profile_form.save(commit=False)
-                profile.user = user
-                profile.save()
-                return redirect(request.path_info)
-        else:
-            profile_form = FormProfile()
-    elif request.method == "POST":
-        profile_form = FormProfile(request.POST)
-        if profile_form.is_valid():
-            person.bio = request.POST["bio"]
-            if request.POST["instagram"]:
-                person.instagram = request.POST["instagram"]
-            person.save()
-            return redirect(request.path_info)
+    #         if profile_form.is_valid():
+    #             profile = profile_form.save(commit=False)
+    #             profile.user = user
+    #             profile.save()
+    #             return redirect(request.path_info)
+    #     else:
+    #         profile_form = FormProfile()
+    # elif request.method == "POST":
+    #     profile_form = FormProfile(request.POST)
+    #     if profile_form.is_valid():
+    #         person.bio = request.POST["bio"]
+    #         if request.POST["instagram"]:
+    #             person.instagram = request.POST["instagram"]
+    #         person.save()
+    #         return redirect(request.path_info)
 
-    else:
-        profile_form = FormProfile(instance=person)
+    # else:
+    #     profile_form = FormProfile(instance=person)
 
-    return render(request, "profile_information.html", {"profile_form": profile_form})
+    # return render(request, "profile_information.html", {"profile_form": profile_form})
 
 
 def edit_and_publish(request, slug):
     author = request.user
-    post = get_object_or_404(blogModel, author=author, slug=slug)
+    post = get_object_or_404(Post, author=author, slug=slug)
     if request.method == "POST":
-        edit_form = blogForm(request.POST)
+        edit_form = PostForm(request.POST)
         if edit_form.is_valid():
             post.title = request.POST["title"]
             post.summary = request.POST["summary"]
@@ -169,17 +169,18 @@ def edit_and_publish(request, slug):
             post.save()
             return redirect("profile/")
     else:
-        edit_form = blogForm(instance=post)
+        edit_form = PostForm(instance=post)
     return render(request, "add_new_post.html", {"blog_form": edit_form})
 
 
 def about_author(request, username):
     user = get_object_or_404(User, username=username)
-    author = AuthorProfile.objects.filter(user=user)
-    if author is None:
-        author = user
+    # author = AuthorProfile.objects.filter(user=user)
+    # if author is None:
+    #     author = user
+    author = user
     posts = (
-        blogModel.objects.filter(published_at__lte=timezone.now(), author=user)
+        Post.objects.filter(published_at__lte=timezone.now(), author=user)
         .select_related("author")
         .defer("created_at", "modified_at")
     )
@@ -198,7 +199,7 @@ def about_author(request, username):
 
 def add_new_post(request):
     if request.method == "POST":
-        blog_form = blogForm(request.POST)
+        blog_form = PostForm(request.POST)
 
         if blog_form.is_valid():
             article = blog_form.save(commit=False)
@@ -206,7 +207,7 @@ def add_new_post(request):
             article.save()
             return redirect(request.path_info)
     else:
-        blog_form = blogForm()
+        blog_form = PostForm()
     return render(request, "add_new_post.html", {"blog_form": blog_form})
 
 

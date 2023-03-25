@@ -3,9 +3,8 @@ from django import template
 from django.utils import timezone
 from django.utils.html import (
     format_html,
-)  # escapes strings parameters before interpolation
-
-# from .models import blogModel
+)
+# from .models import Post
 from django.contrib.auth.models import User
 from django.conf import settings
 from datetime import timedelta

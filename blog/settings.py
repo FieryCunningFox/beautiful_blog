@@ -16,8 +16,8 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "localhost"]
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
+    "django.contrib.admin",
     "django.contrib.sites",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "crispy_forms",
     "widget_tweaks",
-    "home",
+
+    # "home",
 ]
 
 MIDDLEWARE = [
@@ -60,24 +61,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "blog.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRESQL_DB"),
-        "USER": env("POSTGRESQL_USER"),
-        "PASSWORD": env("POSTGRESQL_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": env("POSTGRES_DB"),
+    #     "USER": env("POSTGRES_USER"),
+    #     "PASSWORD": env("POSTGRES_PASSWORD"),
+    #     "HOST": env("DB_HOST"),
+    #     "PORT": env("DB_PORT"),
+    # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -94,10 +91,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "Europe/Moscow"
@@ -105,10 +98,6 @@ TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -120,42 +109,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-FRAOLA_EDITOR_THIRD_PARTY = ("image_aviary", "spell_checker")
-FROALA_EDITOR_PLUGINS = (
-    "align",
-    "char_counter",
-    "code_beautifier",
-    "code_view",
-    "colors",
-    "draggable",
-    "emoticons",
-    "entities",
-    "file",
-    "font_family",
-    "font_size",
-    "fullscreen",
-    "image_manager",
-    "image",
-    "inline_style",
-    "line_breaker",
-    "link",
-    "html",
-    "lists",
-    "paragraph_format",
-    "paragraph_style",
-    "quick_insert",
-    "quote",
-    "save",
-    "table",
-    "url",
-    "video",
-)
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -189,7 +143,7 @@ EMAIL_USE_SSL = True
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-FRAOLA_EDITOR_THIRD_PARTY = ("image_aviary", "spell_checker")
+FROALA_EDITOR_THIRD_PARTY = ("image_aviary", "spell_checker")
 FROALA_EDITOR_PLUGINS = (
     "align",
     "char_counter",
@@ -219,7 +173,5 @@ FROALA_EDITOR_PLUGINS = (
     "url",
     "video",
 )
-
-# AUTH_USER_MODEL = 'users.CustomUser'
 
 SITE_ID = 1

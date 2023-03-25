@@ -1,0 +1,40 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  app:
+    container_name: app
+    restart: always
+    build: .
+    working_dir: /code
+    volumes:
+      - .:/code
+    env_file: .env
+    ports:
+      - 8000:80
+    depends_on:
+      - postgres
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./static:/static
+    ports:
+      - 80:80
+    depends_on:
+      - app
+
+volumes:
+  pg_data:

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, AuthorProfile, Question, blogModel
+from home.models import Comment, Question, Post
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -22,9 +22,9 @@ class CommentForm(forms.ModelForm):
         self.helper.add_input(Submit("submit", "Submit"))
 
 
-class blogForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
-        model = blogModel
+        model = Post
         fields = ["title", "content", "summary", "tags", "image", "published_at"]
 
     content = forms.CharField(widget=FroalaEditor)
@@ -57,21 +57,21 @@ class EmailPostForm(forms.Form):
     comments = forms.CharField(required=False, widget=forms.Textarea)
 
 
-class FormProfile(forms.ModelForm):
-    class Meta:
-        model = AuthorProfile
-        fields = ("bio", "instagram")
+# class FormProfile(forms.ModelForm):
+#     class Meta:
+#         model = AuthorProfile
+#         fields = ("bio", "instagram")
 
-    placeholders = {"bio": "Something about you...", "instagram": "Your Instagram..."}
+#     placeholders = {"bio": "Something about you...", "instagram": "Your Instagram..."}
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        for field_name, field in self.fields.items():
-            if field_name in self.placeholders:
-                self.fields[field_name].widget.attrs["placeholder"] = self.placeholders[
-                    field_name
-                ]
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper = FormHelper()
+#         for field_name, field in self.fields.items():
+#             if field_name in self.placeholders:
+#                 self.fields[field_name].widget.attrs["placeholder"] = self.placeholders[
+#                     field_name
+#                 ]
 
-        self.helper.form_method = "post"
-        self.helper.add_input(Submit("submit", "Submit"))
+#         self.helper.form_method = "post"
+#         self.helper.add_input(Submit("submit", "Submit"))
